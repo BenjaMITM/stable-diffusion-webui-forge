@@ -161,6 +161,7 @@ class ControlNetUnit:
     batch_mask_dir: str = ''
     batch_input_gallery: Optional[List[str]] = None
     batch_mask_gallery: Optional[List[str]] = None
+    multi_inputs_gallery: Optional[List[str]] = None
     generated_image: Optional[np.ndarray] = None
     mask_image: Optional[GradioImageMaskPair] = None
     mask_image_fg: Optional[GradioImageMaskPair] = None

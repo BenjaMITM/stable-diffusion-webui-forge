@@ -13,7 +13,7 @@ import gradio as gr
 from lib_controlnet import global_state, external_code
 from lib_controlnet.external_code import ControlNetUnit
 from lib_controlnet.utils import align_dim_latent, set_numpy_seed, crop_and_resize_image, \
-    prepare_mask, judge_image_type
+    prepare_mask, judge_image_type, try_unfold_unit
 from lib_controlnet.controlnet_ui.controlnet_ui_group import ControlNetUiGroup
 from lib_controlnet.controlnet_ui.photopea import Photopea
 from lib_controlnet.logging import logger
@@ -105,8 +105,13 @@ class ControlNetForForgeOfficial(scripts.Script):
             for unit in units
         ]
         assert all(isinstance(unit, ControlNetUnit) for unit in units)
-        enabled_units = [x for x in units if x.enabled]
-        return enabled_units
+        return [
+            simple_unit
+            for unit in units
+            # Unfold multi-inputs units.
+            for simple_unit in try_unfold_unit(unit)
+            if simple_unit.enabled
+        ]
 
     @staticmethod
     def try_crop_image_with_a1111_mask(
