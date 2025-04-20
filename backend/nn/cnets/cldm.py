@@ -1,5 +1,6 @@
 import torch
 import torch.nn as nn
+from typing import Optional
 
 from backend.nn.unet import timestep_embedding, exists, conv_nd, SpatialTransformer, TimestepEmbedSequential, ResBlock, Downsample
 
